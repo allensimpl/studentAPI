@@ -16,27 +16,15 @@ public class MarkController {
     @Autowired
     private MarkServiceImpl service;
 
-//    @GetMapping
-//    public List<Mark> getMarksAll(){
-//        return service.getAllMarks();
-//    }
-
     @GetMapping("/:{id}")
     public List<Mark> getMark(@PathVariable("id") int id){
         return service.getAllMarksById(id);
     }
 
-
-//    @GetMapping("/BySubject:{subject}")
-//    public List<Mark> getMarksSubject(@PathVariable("subject") String subject){
-//        return service.getMarkSubjects(subject);
-//    }
-
     @GetMapping
     public List<MarkDTO> getAllStudents(
                                     @RequestParam(name = "pageNo",required = true) int pageNo,
                                     @RequestParam(name = "pageSize",required = true) int pageSize,
-//                                    @RequestParam(name = "id",required = false) int id,
                                      @RequestParam(name = "subject",required = true)String subject,
                                      @RequestParam(name = "sort",required = false,defaultValue = "mark") String sort,
                                      @RequestParam(name = "descending", required = false, defaultValue = "false") boolean descending) {

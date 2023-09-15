@@ -18,10 +18,8 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Query(value = "SELECT * FROM students WHERE name LIKE :chara%", nativeQuery = true)
     List<Student> findByStartingChar(String chara);
 
-    //    @Query(value = "SELECT EXISTS(SELECT * FROM students WHERE `student-id` =:rollNo)",nativeQuery = true)
 
-    @Query(
-            value = """
+    @Query(value = """
                     SELECT CASE WHEN EXISTS
                     (
                             SELECT * FROM students WHERE id =:rollNo
@@ -29,35 +27,18 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
                     THEN 'TRUE'
                     ELSE 'FALSE'
                     END
-                    """
-            , nativeQuery = true)
+                    """, nativeQuery = true)
     boolean containsID(int rollNo);
 
-//    @Query(value = "SELECT * FROM students WHERE COALESCE(name LIKE :search,name LIKE %%)",nativeQuery = true)
     @Query(value = "SELECT * FROM students where (:search is null or name like concat('%',:search,'%'))",nativeQuery = true)
     Page<Student> getAllStudents(@Param("search") String search, Pageable pagingParams);
-    @Query(
-            value = """
-                    SELECT CASE WHEN EXISTS
-                    (
-                            SELECT * FROM students WHERE email =:email
-                    )
-                    THEN 'TRUE'
-                    ELSE 'FALSE'
-                    END
-                    """
-            , nativeQuery = true)
-    boolean containsEmail(String email);
 
-    @Query(value = """
-                    SELECT CASE WHEN EXISTS
-                    (
-                            SELECT * FROM students WHERE email IN :emails
-                    )
-                    THEN 'TRUE'
-                    ELSE 'FALSE'
-                    END
+    @Query(value="SELECT * FROM students where email = :email",nativeQuery = true)
+    Student getByEmail(String email);
 
-            """,nativeQuery = true)
-    boolean containsEmailIDs(List<String> emails);
+    @Query(value ="SELECT COUNT(*) from students where email = :email",nativeQuery = true)
+    int emailCount(String email);
+
+    @Query(value = "SELECT COUNT(*) from students where email in :emails",nativeQuery = true)
+    int containsEmailIDs(List<String> emails);
 }

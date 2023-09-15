@@ -28,7 +28,7 @@ public class StudentServiceImpl implements IStudentService{
         for(StudentRequestDTO student:studentsDTO){
             emails.add(student.getEmail());
         }
-        if(repository.containsEmailIDs(emails)){
+        if(repository.containsEmailIDs(emails)>0){
             throw new Exception("Email exists already");
         }
         for(StudentRequestDTO studentDTO:studentsDTO){
@@ -46,7 +46,7 @@ public class StudentServiceImpl implements IStudentService{
 
     @Override
     public ResponseDto postStudent(StudentRequestDTO studentDTO) throws Exception{
-        if(repository.containsEmail(studentDTO.getEmail())){
+        if(repository.emailCount(studentDTO.getEmail())>0){
             throw new Exception("The mail Id already exists");
         }
         Student student = new Student(studentDTO.getEmail(),studentDTO.getName(),studentDTO.getAge());
@@ -57,10 +57,10 @@ public class StudentServiceImpl implements IStudentService{
 
     @Override
     public ResponseDto updateStudent(StudentRequestDTO studentDTO,int id) throws Exception{
-        if(!repository.containsID(id)){
-            throw new Exception("The ID doesn't exist");
-        }
         Student updatingStudent = repository.findById(id).orElse(null);
+        if(updatingStudent==null){
+            throw new Exception("This ID doesntExist");
+        }
         updatingStudent.setAge(studentDTO.getAge());
         updatingStudent.setName(studentDTO.getName());
         updatingStudent.setEmail(studentDTO.getEmail());
@@ -79,12 +79,6 @@ public class StudentServiceImpl implements IStudentService{
         return "Deleted"+id;
     }
 
-    @Override
-    public void print() {
-
-    }
-
-
     public List<StudentResponseDTO> dtoConverter(List<Student> studentList){
         List<StudentResponseDTO> studentResponseDTOList = new ArrayList<>();
         for(Student s:studentList){
@@ -99,7 +93,6 @@ public class StudentServiceImpl implements IStudentService{
         Pageable pagingParams = PageRequest.of(offset, pageSize,
                 JpaSort.unsafe(descending ? Sort.Direction.DESC : Sort.Direction.ASC, "(" + sort + ")"));
         Page<Student> allStudents = repository.getAllStudents( search, pagingParams);
-//        Page<Student> allStudents = repository.findAll(pagingParams);
         return dtoConverter(allStudents.getContent());
     }
 }

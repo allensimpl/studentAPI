@@ -35,7 +35,6 @@ public class MarkServiceImpl implements IMarkService{
         int offset = (pageNo - 1) * pageSize;
         Pageable pagingParams = PageRequest.of(offset, pageSize, JpaSort.unsafe(descending ? Sort.Direction.DESC : Sort.Direction.ASC, "(" + sort + ")"));
         Page<Mark> allMarksSearched = repository.getAllMarks(subject,pagingParams);
-//        Page<Mark> allMarks = repository.findAll(pagingParams);
         return dtoConverter(allMarksSearched.getContent());
     }
 
@@ -43,16 +42,11 @@ public class MarkServiceImpl implements IMarkService{
     public List<Mark> getAllMarksById(int id){
         return repository.findAllOfId(id);
     }
-    
+
     @Override
     public List<Mark> getMark(int id) {
         return repository.findAllOfId(id);
     }
-
-//    @Override
-//    public List<Mark> getMarkSubjects(String subject) {
-//        return repository.findBySubject(subject);
-//    }
 
     @Override
     public Mark postMark(Mark mark) throws Exception {
@@ -64,9 +58,6 @@ public class MarkServiceImpl implements IMarkService{
 
             throw new Exception("User's current marks already Inserted!");
         }
-//        if(!studentRepository.isNEW(mark.getRollNo(),mark.getSubject())){
-//            throw new Exception("User's current marks already Inserted!");
-//        }
         return repository.save(mark);
     }
 
