@@ -2,7 +2,6 @@ package com.studentPro.studentManager.DTO;
 
 
 public class ResponseDto {
-
     String message;
     Integer statusCode;
     Object data;

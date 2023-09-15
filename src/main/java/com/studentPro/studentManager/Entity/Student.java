@@ -6,29 +6,37 @@ import jakarta.persistence.*;
 @Table(name = "students")
 public class Student {
     @Id
-    @Column(name = "student-id")
-    private int rollNo;
-
+    @GeneratedValue
+    @Column(name = "id")
+    private int id;
+    @Column(name = "email")
+    private String email;
     @Column(name="name")
     private String name;
+
     @Column(name = "age")
     private int age;
 
-    public Student() {
-    }
-
-    public Student(int rollNo, String name, int age) {
-        this.rollNo = rollNo;
+    public Student(String email, String name, int age) {
+        this.email = email;
         this.name = name;
         this.age = age;
     }
 
-    public int getRollNo() {
-        return rollNo;
+    public int getId() {
+        return id;
     }
 
-    public void setRollNo(int rollNo) {
-        this.rollNo = rollNo;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -47,5 +55,7 @@ public class Student {
         this.age = age;
     }
 
+    public Student() {
+    }
 
 }

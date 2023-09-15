@@ -1,20 +1,9 @@
 package com.studentPro.studentManager.DTO;
 
-import jakarta.persistence.Column;
-
-public class StudentDTO {
-    public int rollNo;
-
+public class StudentRequestDTO {
     public String name;
     public int age;
-
-    public int getRollNo() {
-        return rollNo;
-    }
-
-    public void setRollNo(int rollNo) {
-        this.rollNo = rollNo;
-    }
+    public String email;
 
     public String getName() {
         return name;
@@ -32,12 +21,19 @@ public class StudentDTO {
         this.age = age;
     }
 
-    public StudentDTO() {
+    public String getEmail() {
+        return email;
     }
 
-    public StudentDTO(int rollNo, String name, int age) {
-        this.rollNo = rollNo;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public StudentRequestDTO(String name, int age, String email) {
         this.name = name;
         this.age = age;
+        this.email = email;
     }
+
+
 }

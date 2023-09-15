@@ -1,85 +1,64 @@
 package com.studentPro.studentManager.Controller;
 
-import com.studentPro.studentManager.DTO.StudentDTO;
-import com.studentPro.studentManager.Entity.Student;
-import com.studentPro.studentManager.Service.StudentServiceImpl;
+import com.studentPro.studentManager.DTO.ResponseDto;
+import com.studentPro.studentManager.DTO.StudentRequestDTO;
+import com.studentPro.studentManager.DTO.StudentResponseDTO;
+import com.studentPro.studentManager.Service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("student")
 public class StudentController {
     @Autowired
-    private StudentServiceImpl service;
-    @GetMapping("/all")
-    public List<StudentDTO> getAllStudents(){
-        List<StudentDTO> studentsDTOList = new ArrayList<>();
-        List<Student> studentsList = service.getStudents();
-        for(Student s:studentsList){
-            StudentDTO tempStudentDTO = new StudentDTO(s.getRollNo(),s.getName(),s.getAge());
-            studentsDTOList.add(tempStudentDTO);
-        }
-        return studentsDTOList;
-    }
+    private IStudentService service;
+
     @GetMapping
-    public List<StudentDTO> getAllStudentsPage(@RequestParam(name = "offset",required = false) Integer offset,@RequestParam(name = "size", required = false) Integer size ){
-        Page<Student> studentsExtra = service.findWithPagination(offset,size);
-        List<StudentDTO> students = new ArrayList<>();
-        for(Student s: studentsExtra.toList()){
-            StudentDTO studentDTO = new StudentDTO(s.getRollNo(),s.getName(),s.getAge());
-            students.add(studentDTO);
-        }
-        return students;
+    public List<StudentResponseDTO> getStudents(@RequestParam(name = "pageNo",required = true) Integer pageNo,
+                                                @RequestParam(name = "pageSize", required = true) Integer pageSize,
+                                                @RequestParam(name = "sort",required = false, defaultValue = "name") String sort,
+                                                @RequestParam(name = "descending", required = false, defaultValue = "false") boolean descending,
+                                                @RequestParam(name = "search",required = false) String search){
+        return service.getStudents(pageNo, pageSize, sort, descending, search);
     }
-    @GetMapping("/:{id}")
-    public StudentDTO getStudentById(@PathVariable("id") int id){
-        Student tempStudent = service.getStudent(id);
-        return new StudentDTO(tempStudent.getRollNo(), tempStudent.getName(),tempStudent.getAge());
-    }
-    @GetMapping("/name:{name}")
-    public List<StudentDTO> getStudentByName(@PathVariable String name){
-        List<Student> tempStudentList = service.getStudentByName(name);
-        List<StudentDTO> studentDTOList = new ArrayList<>();
-        for(Student s:tempStudentList){
-            studentDTOList.add(new StudentDTO(s.getRollNo(),s.getName(),s.getAge()));
-        }
-        return studentDTOList;
-    }
-    @GetMapping("/searchStart:{starting}")
-    public List<StudentDTO> getStudentByNameStarting(@PathVariable String start){
-        List<StudentDTO> studentsDTOList = new ArrayList<>();
-        List<Student> studentsList= service.findByCharInName(start);
-        for(Student s:studentsList){
-            studentsDTOList.add(new StudentDTO(s.getRollNo(),s.getName(),s.getAge()));
-        }
-        return studentsDTOList;
-    }
-//    @GetMapping
-//    public List<Student> getStudentByCharFind(@RequestParam(value = "nameStarting", required = false) String starter){
-//        return service.findByCharInName(starter);
-//    }
+
     @PostMapping
-    public Student saveStudent(@RequestBody Student student){
-        return service.postStudent(student);
+    public ResponseDto saveStudent(@RequestBody StudentRequestDTO student){
+        try{
+            return service.postStudent(student);
+        }catch (Exception e){
+            return new ResponseDto("Failed",200,e.getMessage());
+        }
     }
+
     @PostMapping("/bulk")
-    public List<Student> saveStudents(@RequestBody List<Student> students){
-        return service.postStudents(students);
+    public ResponseDto saveStudents(@RequestBody List<StudentRequestDTO> students){
+        try{
+            return service.postStudents(students);
+        }catch (Exception e){
+            return new ResponseDto("Failed",200,e.getMessage());
+        }
     }
-    @PutMapping
-    public Student updateStudent(@RequestBody Student student){
-        return service.updateStudent(student);
+
+    @PutMapping("/:{id}")
+    //Validation check if it is there
+    public ResponseDto updateStudent(@RequestBody StudentRequestDTO student, @PathVariable int id){
+        try{
+            return service.updateStudent(student,id);
+        }catch (Exception e){
+            return new ResponseDto("Failed",200,e.getMessage());
+        }
     }
+
     @DeleteMapping("/:{id}")
     public String deleteStudent(@PathVariable("id") int id){
-        return service.deleteStudent(id);
-    }
-    @DeleteMapping("all")
-    public String deleteAllStudents(){
-        return service.deleteAll();
+        try{
+            String message = service.deleteStudent(id);
+            return message;
+        }catch(Exception e){
+            return e.getMessage();
+        }
     }
 }

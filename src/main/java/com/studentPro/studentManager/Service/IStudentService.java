@@ -1,28 +1,39 @@
 package com.studentPro.studentManager.Service;
 
+import com.studentPro.studentManager.DTO.ResponseDto;
+import com.studentPro.studentManager.DTO.StudentRequestDTO;
+import com.studentPro.studentManager.DTO.StudentResponseDTO;
 import com.studentPro.studentManager.Entity.Student;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IStudentService {
-    List<Student> getStudents();
+//    List<Student> getStudents();
 
-    Student getStudent(int id);
+//    Student getStudent(int id);
 
-    List<Student> getStudentByName(String name);
+//    List<Student> getStudentByName(String name);
 
-    List<Student> postStudents(List<Student> students);
+//    ResponseDto postStudents(List<StudentRequestDTO> students);
 
-    Student postStudent(Student student);
 
-    Student updateStudent(Student student);
+    ResponseDto postStudents(List<StudentRequestDTO> studentsDTO) throws Exception;
 
-    String deleteStudent(int id);
+    ResponseDto updateStudent(StudentRequestDTO studentDTO,int id) throws Exception;
 
-    String deleteAll();
+//    String deleteStudent(int id);
+    String deleteStudent(int id) throws Exception;
+    ResponseDto postStudent(StudentRequestDTO studentDTO) throws Exception;
 
-    List<Student> findByCharInName(String chara);
+    void print();
 
-    Page<Student> findWithPagination(int offset, int size);
+//    String deleteAll();
+
+//    List<Student> findByCharInName(String chara);
+
+//    Page<Student> findWithPagination(int offset, int size);
+
+//    List<StudentDTO> getStudents(int pageNo, int pageSize, String sort, String search);
+
+    List<StudentResponseDTO> getStudents(int pageNo, int pageSize, String sort, boolean descending, String search);
 }

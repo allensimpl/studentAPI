@@ -16,7 +16,6 @@ public class Mark {
     @Column(name = "subject")
     String subject;
 
-    @Column(name = "mark")
     int mark;
 
     public Mark() {
