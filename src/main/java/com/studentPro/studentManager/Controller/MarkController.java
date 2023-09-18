@@ -2,7 +2,9 @@ package com.studentPro.studentManager.Controller;
 
 
 import com.studentPro.studentManager.DTO.MarkDTO;
-import com.studentPro.studentManager.DTO.ResponseDto;
+import com.studentPro.studentManager.DTO.MarkRequestDTO;
+import com.studentPro.studentManager.DTO.MarkResponseDTO;
+import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.Entity.Mark;
 import com.studentPro.studentManager.Service.MarkServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,58 +24,62 @@ public class MarkController {
     }
 
     @GetMapping
-    public List<MarkDTO> getAllStudents(
+    public List<MarkDTO> getAllMarks(
                                     @RequestParam(name = "pageNo",required = true) int pageNo,
                                     @RequestParam(name = "pageSize",required = true) int pageSize,
-                                     @RequestParam(name = "subject",required = true)String subject,
+                                     @RequestParam(name = "subjectID",required = true)int subjectID,
                                      @RequestParam(name = "sort",required = false,defaultValue = "mark") String sort,
                                      @RequestParam(name = "descending", required = false, defaultValue = "false") boolean descending) {
-        return service.getMarks(pageNo,pageSize,subject,sort,descending);
+        return service.getMarks(pageNo,pageSize,subjectID,sort,descending);
     }
 
     @PostMapping
-    public ResponseDto addMark(@RequestBody Mark mark){
+    public ResponseDTO addMark(@RequestBody MarkRequestDTO mark){
         try{
             Mark data = service.postMark(mark);
-            return new ResponseDto("Success", 200, data);
+            return new ResponseDTO("Success", 200, data);
         }catch (Exception e) {
 //            e.printStackTrace();
             System.out.println(e.getMessage());
             System.out.println("Error in Adding");
-            return new ResponseDto(e.getMessage(), 500, null);
+            return new ResponseDTO(e.getMessage(), 500, null);
         }
     }
 
     @PostMapping("/bulk")
-    public ResponseDto addMarks(@RequestBody List<Mark> marks)  {
+    public ResponseDTO addMarks(@RequestBody List<MarkRequestDTO> marks)  {
         try{
-            List<Mark> data = service.postMarks(marks);
-            return new ResponseDto("Success Bulk",200,data);
+            List<MarkResponseDTO> data = service.postMarks(marks);
+            return new ResponseDTO("Success Bulk",200,data);
         }catch(Exception e){
             System.out.println(e.getMessage());
             System.out.println("Error In Bulk Adding");
-            return new ResponseDto(e.getMessage(),500,null);
+            return new ResponseDTO(e.getMessage(),500,null);
         }
     }
 
-    @PutMapping
-    public Mark updateMark(Mark mark){
-        return service.updateMarkItem(mark);
+    @PutMapping("/:{id}")
+    public ResponseDTO updateMark(@RequestBody MarkRequestDTO mark,@PathVariable("id") int id){
+        return service.updateMarkItem(mark,id);
     }
 
-    @DeleteMapping("/all")
-    public String deleteAll(){
-        return service.deleteAll();
-    }
+//    @DeleteMapping("/all")
+//    public String deleteAll(){
+//        return service.deleteAll();
+//    }
 
-    @DeleteMapping("/")
-    public String deleteMark(@RequestParam int id, String subject){
-        return service.deleteMark(id,subject);
-    }
+//    @DeleteMapping("/")
+//    public String deleteMark(@RequestParam int id, String subject){
+//        return service.deleteMark(id,subject);
+//    }
 
     @DeleteMapping("/:{id}")
     public String deleteById(@PathVariable("id") int id){
-        return service.deleteById(id);
+        try{
+            return service.deleteById(id);
+        }catch(Exception e){
+            return e.getMessage();
+        }
     }
 
 }

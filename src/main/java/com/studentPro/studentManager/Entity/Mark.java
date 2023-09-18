@@ -7,19 +7,33 @@ import jakarta.persistence.*;
 public class Mark {
     @Id
     @GeneratedValue
-    @Column(name = "student-id")
+    @Column(name = "id")
     private int markId;
 
 
-    @Column(name="id")
-    int rollNo;
-    @Column(name = "subject")
-    String subject;
+    @Column(name="st_id")
+    int studentID;
 
+    @Column(name = "subject_id")
+    int subject;
+
+    @Column(name = "mark")
     int mark;
 
     public Mark() {
+    }
 
+    public Mark(int studentID, int subject, int mark) {
+        this.studentID = studentID;
+        this.subject = subject;
+        this.mark = mark;
+    }
+
+    public Mark(int markId, int studentID, int subject, int mark) {
+        this.markId = markId;
+        this.studentID = studentID;
+        this.subject = subject;
+        this.mark = mark;
     }
 
     public int getMarkId() {
@@ -30,36 +44,19 @@ public class Mark {
         this.markId = markId;
     }
 
-    public int getRollNo() {
-        return rollNo;
+    public int getStudentID() {
+        return studentID;
     }
 
-    public void setRollNo(int rollNo) {
-        this.rollNo = rollNo;
+    public void setStudentID(int studentID) {
+        this.studentID = studentID;
     }
 
-
-
-    public Mark(int rollNo, String subject, int mark) {
-        this.rollNo = rollNo;
-        this.subject = subject;
-        this.mark = mark;
-    }
-
-
-    public int getsId() {
-        return this.rollNo;
-    }
-
-    public void setsId(int rollNo) {
-        this.rollNo = rollNo;
-    }
-
-    public String getSubject() {
+    public int getSubject() {
         return subject;
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(int subject) {
         this.subject = subject;
     }
 
@@ -70,4 +67,5 @@ public class Mark {
     public void setMark(int mark) {
         this.mark = mark;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.studentPro.studentManager.DTO;
 
 
-public class ResponseDto {
+public class ResponseDTO {
     String message;
     Integer statusCode;
     Object data;
@@ -30,7 +30,7 @@ public class ResponseDto {
         this.data = data;
     }
 
-    public ResponseDto(String message, Integer statusCode, Object data) {
+    public ResponseDTO(String message, Integer statusCode, Object data) {
         this.message = message;
         this.statusCode = statusCode;
         this.data = data;

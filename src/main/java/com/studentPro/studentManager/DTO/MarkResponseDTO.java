@@ -1,23 +1,16 @@
 package com.studentPro.studentManager.DTO;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
-public class MarkDTO {
+public class MarkResponseDTO {
     private int markId;
     int studentID;
     int subjectID;
     int mark;
 
-    public MarkDTO(int markId, int studentID, int subjectID, int mark) {
-        this.markId = markId;
-        this.studentID = studentID;
-        this.subjectID = subjectID;
-        this.mark = mark;
+    public MarkResponseDTO() {
     }
 
-    public MarkDTO(int studentID, int subjectID, int mark) {
+    public MarkResponseDTO(int markId, int studentID, int subjectID, int mark) {
+        this.markId = markId;
         this.studentID = studentID;
         this.subjectID = subjectID;
         this.mark = mark;

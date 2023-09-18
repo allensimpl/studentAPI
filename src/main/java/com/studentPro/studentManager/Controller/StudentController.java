@@ -1,6 +1,6 @@
 package com.studentPro.studentManager.Controller;
 
-import com.studentPro.studentManager.DTO.ResponseDto;
+import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.DTO.StudentRequestDTO;
 import com.studentPro.studentManager.DTO.StudentResponseDTO;
 import com.studentPro.studentManager.Service.IStudentService;
@@ -25,30 +25,30 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseDto saveStudent(@RequestBody StudentRequestDTO student){
+    public ResponseDTO saveStudent(@RequestBody StudentRequestDTO student){
         try{
             return service.postStudent(student);
         }catch (Exception e){
-            return new ResponseDto("Failed",200,e.getMessage());
+            return new ResponseDTO("Failed",200,e.getMessage());
         }
     }
 
     @PostMapping("/bulk")
-    public ResponseDto saveStudents(@RequestBody List<StudentRequestDTO> students){
+    public ResponseDTO saveStudents(@RequestBody List<StudentRequestDTO> students){
         try{
             return service.postStudents(students);
         }catch (Exception e){
-            return new ResponseDto("Failed",200,e.getMessage());
+            return new ResponseDTO("Failed",200,e.getMessage());
         }
     }
 
     @PutMapping("/:{id}")
     //Validation check if it is there
-    public ResponseDto updateStudent(@RequestBody StudentRequestDTO student, @PathVariable int id){
+    public ResponseDTO updateStudent(@RequestBody StudentRequestDTO student, @PathVariable int id){
         try{
             return service.updateStudent(student,id);
         }catch (Exception e){
-            return new ResponseDto("Failed",200,e.getMessage());
+            return new ResponseDTO("Failed",200,e.getMessage());
         }
     }
 

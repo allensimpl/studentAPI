@@ -1,5 +1,5 @@
 package com.studentPro.studentManager.Service;
-import com.studentPro.studentManager.DTO.ResponseDto;
+import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.DTO.StudentRequestDTO;
 import com.studentPro.studentManager.DTO.StudentResponseDTO;
 import com.studentPro.studentManager.Entity.Student;
@@ -21,7 +21,7 @@ public class StudentServiceImpl implements IStudentService{
     private StudentRepository repository;
 
     @Override
-    public ResponseDto postStudents(List<StudentRequestDTO> studentsDTO) throws Exception {
+    public ResponseDTO postStudents(List<StudentRequestDTO> studentsDTO) throws Exception {
 
         List<Student> studentList = new ArrayList<>();
         List<String> emails = new ArrayList<>();
@@ -40,23 +40,23 @@ public class StudentServiceImpl implements IStudentService{
         for(Student sResponse:dataStudent){
             data.add(new StudentResponseDTO(sResponse.getId(),sResponse.getName(),sResponse.getAge(), sResponse.getEmail()));
         }
-        return (new ResponseDto("Success",200,data));
+        return (new ResponseDTO("Success",200,data));
     }
 
 
     @Override
-    public ResponseDto postStudent(StudentRequestDTO studentDTO) throws Exception{
+    public ResponseDTO postStudent(StudentRequestDTO studentDTO) throws Exception{
         if(repository.emailCount(studentDTO.getEmail())>0){
             throw new Exception("The mail Id already exists");
         }
         Student student = new Student(studentDTO.getEmail(),studentDTO.getName(),studentDTO.getAge());
         Student data = repository.save(student);
         StudentResponseDTO studentDTOResponseData = new StudentResponseDTO(data.getId(),data.getName(),data.getAge(),data.getEmail());
-        return new ResponseDto("Success",200,studentDTOResponseData);
+        return new ResponseDTO("Success",200,studentDTOResponseData);
     }
 
     @Override
-    public ResponseDto updateStudent(StudentRequestDTO studentDTO,int id) throws Exception{
+    public ResponseDTO updateStudent(StudentRequestDTO studentDTO, int id) throws Exception{
         Student updatingStudent = repository.findById(id).orElse(null);
         if(updatingStudent==null){
             throw new Exception("This ID doesntExist");
@@ -66,7 +66,7 @@ public class StudentServiceImpl implements IStudentService{
         updatingStudent.setEmail(studentDTO.getEmail());
         Student data = repository.save(updatingStudent);
         StudentResponseDTO responseData = new StudentResponseDTO(data.getId(),data.getName(),data.getAge(),data.getEmail());
-        ResponseDto responseDTO = new ResponseDto("Updated",200,responseData);
+        ResponseDTO responseDTO = new ResponseDTO("Updated",200,responseData);
         return responseDTO;
     }
 

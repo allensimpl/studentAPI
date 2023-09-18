@@ -1,6 +1,9 @@
 package com.studentPro.studentManager.Service;
 
 import com.studentPro.studentManager.DTO.MarkDTO;
+import com.studentPro.studentManager.DTO.MarkRequestDTO;
+import com.studentPro.studentManager.DTO.MarkResponseDTO;
+import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.Entity.Mark;
 import com.studentPro.studentManager.Repository.MarkRepository;
 import com.studentPro.studentManager.Repository.StudentRepository;
@@ -25,16 +28,16 @@ public class MarkServiceImpl implements IMarkService{
     public List<MarkDTO> dtoConverter(List<Mark> markList){
         List<MarkDTO> markDTOList = new ArrayList<>();
         for(Mark m:markList){
-            markDTOList.add(new MarkDTO(m.getMarkId(),m.getRollNo(),m.getSubject(),m.getMark()));
+            markDTOList.add(new MarkDTO(m.getMarkId(),m.getStudentID(),m.getStudentID(),m.getMark()));
         }
         return markDTOList;
     }
 
     @Override
-    public List<MarkDTO> getMarks(int pageNo, int pageSize, String subject, String sort, boolean descending){
+    public List<MarkDTO> getMarks(int pageNo, int pageSize, int subjectID, String sort, boolean descending){
         int offset = (pageNo - 1) * pageSize;
         Pageable pagingParams = PageRequest.of(offset, pageSize, JpaSort.unsafe(descending ? Sort.Direction.DESC : Sort.Direction.ASC, "(" + sort + ")"));
-        Page<Mark> allMarksSearched = repository.getAllMarks(subject,pagingParams);
+        Page<Mark> allMarksSearched = repository.getAllMarks(subjectID,pagingParams);
         return dtoConverter(allMarksSearched.getContent());
     }
 
@@ -49,54 +52,84 @@ public class MarkServiceImpl implements IMarkService{
     }
 
     @Override
-    public Mark postMark(Mark mark) throws Exception {
-        if (!studentRepository.containsID(mark.getRollNo())) {
+    public Mark postMark(MarkRequestDTO mark) throws Exception {
+        if (!studentRepository.containsID(mark.getSubjectID())) {
             throw new Exception("User doesn't exist in Student Table!");
         }
-        boolean test = repository.isNEW(mark.getRollNo(),mark.getSubject());
-        if(repository.isNEW(mark.getRollNo(),mark.getSubject())){
-
+        boolean test = repository.isNEW(mark.getStudentID(),mark.getSubjectID());
+        if(repository.isNEW(mark.getStudentID(),mark.getSubjectID())){
             throw new Exception("User's current marks already Inserted!");
         }
-        return repository.save(mark);
+        Mark newData = new Mark(mark.getStudentID(),mark.getSubjectID(),mark.getMark());
+        return repository.save(newData);
     }
 
     @Override
-    public List<Mark> postMarks(List<Mark> marks) throws Exception {
-        for(Mark eachMark:marks){
-            if(!studentRepository.containsID(eachMark.getRollNo())){
-                throw new Exception("User"+eachMark.getRollNo()+" doesn't exist");
+    public List<MarkResponseDTO> postMarks(List<MarkRequestDTO> marks) throws Exception {
+        List<Integer> studentIDList = new ArrayList<>();
+        for(MarkRequestDTO eachMark:marks){
+            studentIDList.add(eachMark.getStudentID());
+        }
+//        boolean test = studentRepository.containsIDList(studentIDList);
+//        if(!studentRepository.containsIDList(studentIDList)){
+//            throw Exception("User doesn't exist");
+//        }
+//        List<Integer> subjectIDList = new ArrayList<>();
+//        for(MarkRequestDTO eachMark:marks){
+//            subjectIDList.add(eachMark.getSubjectID());
+//        }
+//        if(repository.isNEW(studentIDList,subjectIDList)){
+//            throw new Exception("User marks already inserted");
+//        }
+
+
+        for(MarkRequestDTO eachMark:marks){
+            if(!studentRepository.containsID(eachMark.getStudentID())){
+                throw new Exception("User"+eachMark.getStudentID()+" doesn't exist");
             }
-            if(repository.isNEW(eachMark.getRollNo(),eachMark.getSubject())){
+            if(repository.isNEW(eachMark.getStudentID(),eachMark.getSubjectID())){
                 throw new Exception("User's current marks already Inserted");
             }
         }
-        return repository.saveAll(marks);
+        List<Mark> marksData = new ArrayList<>();
+        for(MarkRequestDTO eachMark:marks){
+            marksData.add(new Mark(eachMark.getStudentID(),eachMark.getSubjectID(), eachMark.getMark()));
+        }
+        List<Mark> markResponse = repository.saveAll(marksData);
+        List<MarkResponseDTO> markResponseDTOList = new ArrayList<>();
+        for(Mark m:markResponse){
+            markResponseDTOList.add(new MarkResponseDTO(m.getMarkId(),m.getStudentID(),m.getSubject(),m.getMark()));
+        }
+        return markResponseDTOList;
     }
 
     @Override
-    public Mark updateMarkItem(Mark mark) {
-        Mark updatingMarkItem = repository.findById(mark.getsId()).orElse(null);
+    public ResponseDTO updateMarkItem(MarkRequestDTO mark, int id) {
+        Mark updatingMarkItem = repository.findById(id).orElse(null);
+        updatingMarkItem.setSubject(mark.getSubjectID());
+        updatingMarkItem.setStudentID(mark.getStudentID());
         updatingMarkItem.setMark(mark.getMark());
-        updatingMarkItem.setSubject(mark.getSubject());
-        updatingMarkItem.setRollNo(mark.getRollNo());
-        return updatingMarkItem;
+        MarkResponseDTO data = new MarkResponseDTO(updatingMarkItem.getMarkId(),updatingMarkItem.getSubject(),updatingMarkItem.getStudentID(), updatingMarkItem.getMark());
+        return new ResponseDTO("success",200,data);
     }
 
-    @Override
-    public String deleteMark(int id, String subject) {
-        repository.deleteMark(id,subject);
-        return "Deleted"+id;
-    }
+//    @Override
+//    public String deleteMark(int id, int subjectID) {
+//        repository.deleteMark(id,subjectID);
+//        return "Deleted"+id;
+//    }
+//
+//    @Override
+//    public String deleteAll(){
+//        repository.deleteAll();
+//        return "Deleted Everything";
+//    }
 
     @Override
-    public String deleteAll(){
-        repository.deleteAll();
-        return "Deleted Everything";
-    }
-
-    @Override
-    public String deleteById(int id){
+    public String deleteById(int id) throws Exception {
+        if(repository.getIDCount(id)<1){
+            throw new Exception("ID doesn't exist");
+        }
         repository.deleteById(id);
         return id+" ID Deleted";
     }

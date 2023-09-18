@@ -1,6 +1,7 @@
 package com.studentPro.studentManager.Repository;
 
 import com.studentPro.studentManager.Entity.Student;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +19,6 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Query(value = "SELECT * FROM students WHERE name LIKE :chara%", nativeQuery = true)
     List<Student> findByStartingChar(String chara);
 
-
     @Query(value = """
                     SELECT CASE WHEN EXISTS
                     (
@@ -29,6 +29,9 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
                     END
                     """, nativeQuery = true)
     boolean containsID(int rollNo);
+
+    @Query(value = "SELECT * FROM students where id IN :ids",nativeQuery = true)
+    boolean containsIDList(List<Integer> ids);
 
     @Query(value = "SELECT * FROM students where (:search is null or name like concat('%',:search,'%'))",nativeQuery = true)
     Page<Student> getAllStudents(@Param("search") String search, Pageable pagingParams);

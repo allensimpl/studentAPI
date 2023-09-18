@@ -1,6 +1,9 @@
 package com.studentPro.studentManager.Service;
 
 import com.studentPro.studentManager.DTO.MarkDTO;
+import com.studentPro.studentManager.DTO.MarkRequestDTO;
+import com.studentPro.studentManager.DTO.MarkResponseDTO;
+import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.Entity.Mark;
 
 import java.util.List;
@@ -14,8 +17,8 @@ public interface IMarkService {
 
 //    List<Mark> getMarks(int pageNo, int pageSize, int id, String subject);
 
-
-    List<MarkDTO> getMarks(int pageNo, int pageSize, String subject, String sort, boolean descending);
+    List<MarkDTO> getMarks(int pageNo, int pageSize, int subjectID, String sort, boolean descending);
+//    List<MarkDTO> getMarks(int pageNo, int pageSize, String subject, String sort, boolean descending);
 
     List<Mark> getAllMarksById(int id);
 
@@ -23,12 +26,21 @@ public interface IMarkService {
 
     List<Mark> getMark(int id);
 
-    Mark postMark(Mark mark) throws Exception;
-    List<Mark> postMarks(List<Mark> marks) throws Exception;
-    Mark updateMarkItem(Mark mark);
-    String deleteMark(int id,String subject);
+//    Mark postMark(Mark mark) throws Exception;
 
-    String deleteAll();
+    Mark postMark(MarkRequestDTO mark) throws Exception;
 
-    String deleteById(int id);
+    List<MarkResponseDTO> postMarks(List<MarkRequestDTO> marks) throws Exception;
+
+
+    ResponseDTO updateMarkItem(MarkRequestDTO mark, int id);
+//    String deleteMark(int id,String subject);
+
+//    Mark updateMarkItem(MarkRequestDTO mark, int id);
+
+//    String deleteMark(int id, int subjectID);
+
+//    String deleteAll();
+
+    String deleteById(int id) throws Exception;
 }
