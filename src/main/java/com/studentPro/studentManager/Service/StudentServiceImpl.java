@@ -1,4 +1,5 @@
 package com.studentPro.studentManager.Service;
+import Constants.MessageConstants;
 import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.DTO.StudentRequestDTO;
 import com.studentPro.studentManager.DTO.StudentResponseDTO;
@@ -29,7 +30,7 @@ public class StudentServiceImpl implements IStudentService{
             emails.add(student.getEmail());
         }
         if(repository.containsEmailIDs(emails)>0){
-            throw new Exception("Email exists already");
+            throw new Exception(MessageConstants.EMAIL_ALREADY_EXISTS);
         }
         for(StudentRequestDTO studentDTO:studentsDTO){
             Student student = new Student(studentDTO.getEmail(),studentDTO.getName(),studentDTO.getAge());
@@ -40,43 +41,43 @@ public class StudentServiceImpl implements IStudentService{
         for(Student sResponse:dataStudent){
             data.add(new StudentResponseDTO(sResponse.getId(),sResponse.getName(),sResponse.getAge(), sResponse.getEmail()));
         }
-        return (new ResponseDTO("Success",200,data));
+        return (new ResponseDTO(MessageConstants.SUCCESS,200,data));
     }
 
 
     @Override
     public ResponseDTO postStudent(StudentRequestDTO studentDTO) throws Exception{
         if(repository.emailCount(studentDTO.getEmail())>0){
-            throw new Exception("The mail Id already exists");
+            throw new Exception(MessageConstants.EMAIL_ALREADY_EXISTS);
         }
         Student student = new Student(studentDTO.getEmail(),studentDTO.getName(),studentDTO.getAge());
         Student data = repository.save(student);
         StudentResponseDTO studentDTOResponseData = new StudentResponseDTO(data.getId(),data.getName(),data.getAge(),data.getEmail());
-        return new ResponseDTO("Success",200,studentDTOResponseData);
+        return new ResponseDTO(MessageConstants.SUCCESS,200,studentDTOResponseData);
     }
 
     @Override
     public ResponseDTO updateStudent(StudentRequestDTO studentDTO, int id) throws Exception{
         Student updatingStudent = repository.findById(id).orElse(null);
         if(updatingStudent==null){
-            throw new Exception("This ID doesntExist");
+            throw new Exception(MessageConstants.FAILED_NO_ID);
         }
         updatingStudent.setAge(studentDTO.getAge());
         updatingStudent.setName(studentDTO.getName());
         updatingStudent.setEmail(studentDTO.getEmail());
         Student data = repository.save(updatingStudent);
         StudentResponseDTO responseData = new StudentResponseDTO(data.getId(),data.getName(),data.getAge(),data.getEmail());
-        ResponseDTO responseDTO = new ResponseDTO("Updated",200,responseData);
+        ResponseDTO responseDTO = new ResponseDTO(MessageConstants.UPDATED,200,responseData);
         return responseDTO;
     }
 
     @Override
     public String deleteStudent(int id) throws Exception{
         if(repository.containsID(id)<1){
-            throw new Exception("The ID never existed");
+            throw new Exception(MessageConstants.FAILED_NO_ID);
         }
         repository.deleteById(id);
-        return "Deleted"+id;
+        return MessageConstants.successfulDeletion(id);
     }
 
     public List<StudentResponseDTO> dtoConverter(List<Student> studentList){

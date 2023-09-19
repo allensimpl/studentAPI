@@ -52,7 +52,7 @@ public class MarkController {
     public ResponseDTO addMarks(@RequestBody List<MarkRequestDTO> marks)  {
         try{
             List<MarkResponseDTO> data = service.postMarks(marks);
-            return new ResponseDTO("Success Bulk",200,data);
+            return new ResponseDTO(MessageConstants.SUCCESS,200,data);
         }catch(Exception e){
             return new ResponseDTO(e.getMessage(),500,null);
         }

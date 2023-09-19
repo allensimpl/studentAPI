@@ -1,5 +1,6 @@
 package com.studentPro.studentManager.Controller;
 
+import Constants.MessageConstants;
 import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.DTO.StudentRequestDTO;
 import com.studentPro.studentManager.DTO.SubjectRequestDTO;
@@ -29,7 +30,7 @@ public class SubjectController {
         try{
             return service.addSubject(student);
         } catch (Exception e) {
-            return new ResponseDTO("Failed",500,e.getMessage());
+            return new ResponseDTO(MessageConstants.FAILED,500,e.getMessage());
         }
     }
     @PostMapping("/bulk")
@@ -37,7 +38,7 @@ public class SubjectController {
         try{
             return service.addSubjects(students);
         }catch (Exception e){
-            return new ResponseDTO("Failed",500,e.getMessage());
+            return new ResponseDTO(MessageConstants.FAILED,500,e.getMessage());
         }
     }
     @PutMapping("/:{id}")
@@ -45,7 +46,7 @@ public class SubjectController {
         try{
             return service.updateStudent(student,id);
         } catch (Exception e) {
-            return new ResponseDTO("Failed to update",500,e.getMessage());
+            return new ResponseDTO(MessageConstants.FAILED,500,e.getMessage());
         }
     }
     @DeleteMapping("/:{id}")
@@ -53,7 +54,7 @@ public class SubjectController {
         try{
             return service.deleteStudent(id);
         }catch (Exception e){
-            return new ResponseDTO("ID Doesn't exist",500,e.getMessage());
+            return new ResponseDTO(MessageConstants.FAILED_NO_ID,500,e.getMessage());
         }
     }
 }

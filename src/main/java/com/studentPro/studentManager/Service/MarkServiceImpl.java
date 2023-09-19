@@ -1,5 +1,6 @@
 package com.studentPro.studentManager.Service;
 
+import Constants.MessageConstants;
 import Mapper.StudentMapper;
 import com.studentPro.studentManager.DTO.MarkDTO;
 import com.studentPro.studentManager.DTO.MarkRequestDTO;
@@ -50,10 +51,10 @@ public class MarkServiceImpl implements IMarkService{
     @Override
     public Mark postMark(MarkRequestDTO mark) throws Exception {
         if (studentRepository.containsID(mark.getStudentID())<1) {
-            throw new Exception("User doesn't exist in Student Table!");
+            throw new Exception(MessageConstants.FAILED_NO_ID);
         }
         if(repository.isNEW(mark.getStudentID(),mark.getSubjectID())>0){
-            throw new Exception("User's current marks already Inserted!");
+            throw new Exception(MessageConstants.ALREADY_EXISTS);
         }
         Mark newData = new Mark(mark.getStudentID(),mark.getSubjectID(),mark.getMark());
         //move to mapper class
@@ -67,13 +68,13 @@ public class MarkServiceImpl implements IMarkService{
             studentIDList.add(eachMark.getStudentID());
         }
         if(studentRepository.containsIDList(studentIDList)<1){
-            throw new Exception("The ID is not there in students class");
+            throw new Exception(MessageConstants.FAILED_NO_ID);
         }
         List<String> uniqueIds = (List<String>) marks.stream().map(m -> (Integer.toString( m.getStudentID())+Integer.toString(m.getSubjectID()))).toList();
         List<String> existingids = repository.getStudentMarkList();
         for (String id : uniqueIds){
             if(existingids.contains(id)){
-                throw new Exception("already exists"+id);
+                throw new Exception(MessageConstants.AlreadyExists(id));
             }
         }
         List<Mark> marksData = new ArrayList<>();
@@ -98,17 +99,17 @@ public class MarkServiceImpl implements IMarkService{
         updatingMarkItem.setMark(mark.getMark());
         //move to mapper
         MarkResponseDTO data = new MarkResponseDTO(updatingMarkItem.getMarkId(),updatingMarkItem.getSubject(),updatingMarkItem.getStudentID(), updatingMarkItem.getMark());
-        return new ResponseDTO("success",200,data);
+        return new ResponseDTO(MessageConstants.SUCCESS,200,data);
         //move to constants
     }
 
     @Override
     public String deleteById(int id) throws Exception {
         if(repository.getIDCount(id)<1){
-            throw new Exception("ID doesn't exist");
+            throw new Exception(MessageConstants.FAILED_NO_ID);
         }
         repository.deleteById(id);
-        return id+" ID Deleted";
+        return MessageConstants.successfulDeletion(id);
     }
 
     public List<Mark> listAll(){

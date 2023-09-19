@@ -1,5 +1,6 @@
 package com.studentPro.studentManager.Controller;
 
+import Constants.MessageConstants;
 import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.DTO.StudentRequestDTO;
 import com.studentPro.studentManager.DTO.StudentResponseDTO;
@@ -29,7 +30,7 @@ public class StudentController {
         try{
             return service.postStudent(student);
         }catch (Exception e){
-            return new ResponseDTO("Failed",200,e.getMessage());
+            return new ResponseDTO(MessageConstants.FAILED,200,e.getMessage());
         }
     }
 
@@ -38,7 +39,7 @@ public class StudentController {
         try{
             return service.postStudents(students);
         }catch (Exception e){
-            return new ResponseDTO("Failed",200,e.getMessage());
+            return new ResponseDTO(MessageConstants.FAILED,200,e.getMessage());
         }
     }
 
@@ -48,7 +49,7 @@ public class StudentController {
         try{
             return service.updateStudent(student,id);
         }catch (Exception e){
-            return new ResponseDTO("Failed",200,e.getMessage());
+            return new ResponseDTO(MessageConstants.FAILED,200,e.getMessage());
         }
     }
 
