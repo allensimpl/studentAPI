@@ -72,7 +72,7 @@ public class StudentServiceImpl implements IStudentService{
 
     @Override
     public String deleteStudent(int id) throws Exception{
-        if(!repository.containsID(id)){
+        if(repository.containsID(id)<1){
             throw new Exception("The ID never existed");
         }
         repository.deleteById(id);
@@ -86,6 +86,7 @@ public class StudentServiceImpl implements IStudentService{
         }
         return studentResponseDTOList;
     }
+    //move to mapper class
 
     @Override
     public List<StudentResponseDTO> getStudents(int pageNo, int pageSize, String sort, boolean descending, String search){

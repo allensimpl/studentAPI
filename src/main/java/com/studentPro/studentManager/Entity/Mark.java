@@ -15,7 +15,7 @@ public class Mark {
     int studentID;
 
     @Column(name = "subject_id")
-    int subject;
+    int subjectID;
 
     @Column(name = "mark")
     int mark;
@@ -25,14 +25,14 @@ public class Mark {
 
     public Mark(int studentID, int subject, int mark) {
         this.studentID = studentID;
-        this.subject = subject;
+        this.subjectID = subject;
         this.mark = mark;
     }
 
     public Mark(int markId, int studentID, int subject, int mark) {
         this.markId = markId;
         this.studentID = studentID;
-        this.subject = subject;
+        this.subjectID = subject;
         this.mark = mark;
     }
 
@@ -53,11 +53,11 @@ public class Mark {
     }
 
     public int getSubject() {
-        return subject;
+        return subjectID;
     }
 
     public void setSubject(int subject) {
-        this.subject = subject;
+        this.subjectID = subject;
     }
 
     public int getMark() {

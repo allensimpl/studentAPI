@@ -1,6 +1,6 @@
 package com.studentPro.studentManager.DTO;
 
-public class StudentRequestDTO {
+public class  StudentRequestDTO {
     public String name;
     public int age;
     public String email;

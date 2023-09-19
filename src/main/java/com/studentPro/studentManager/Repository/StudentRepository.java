@@ -13,25 +13,27 @@ import java.util.List;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student,Integer> {
-    @Query(value = "SELECT * FROM students WHERE name = :toFindName", nativeQuery = true)
+    @Query(value = "SELECT * FROM students WHERE name=:toFindName", nativeQuery = true)
     List<Student> findByName(String toFindName);
 
     @Query(value = "SELECT * FROM students WHERE name LIKE :chara%", nativeQuery = true)
     List<Student> findByStartingChar(String chara);
 
-    @Query(value = """
-                    SELECT CASE WHEN EXISTS
-                    (
-                            SELECT * FROM students WHERE id =:rollNo
-                    )
-                    THEN 'TRUE'
-                    ELSE 'FALSE'
-                    END
-                    """, nativeQuery = true)
-    boolean containsID(int rollNo);
+//    @Query(value = """
+//                    SELECT CASE WHEN EXISTS
+//                    (
+//                            SELECT * FROM students WHERE id =:rollNo
+//                    )
+//                    THEN 'TRUE'
+//                    ELSE 'FALSE'
+//                    END
+//                    """, nativeQuery = true)
+//    boolean containsID(int rollNo);
+    @Query(value = "SELECT COUNT(*) FROM students WHERE id = :rollNO",nativeQuery = true)
+    int containsID(@Param("rollNO") int rollNo);
 
-    @Query(value = "SELECT * FROM students where id IN :ids",nativeQuery = true)
-    boolean containsIDList(List<Integer> ids);
+    @Query(value = "SELECT COUNT(*) FROM students WHERE id IN :ids",nativeQuery = true)
+    int containsIDList(List<Integer> ids);
 
     @Query(value = "SELECT * FROM students where (:search is null or name like concat('%',:search,'%'))",nativeQuery = true)
     Page<Student> getAllStudents(@Param("search") String search, Pageable pagingParams);

@@ -1,13 +1,13 @@
 package com.studentPro.studentManager.Controller;
 
 
+import Constants.MessageConstants;
 import com.studentPro.studentManager.DTO.MarkDTO;
 import com.studentPro.studentManager.DTO.MarkRequestDTO;
 import com.studentPro.studentManager.DTO.MarkResponseDTO;
 import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.Entity.Mark;
-import com.studentPro.studentManager.Service.MarkServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.studentPro.studentManager.Service.IMarkService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("marks")
 public class MarkController {
-    @Autowired
-    private MarkServiceImpl service;
+
+    private IMarkService service;
+
+    public MarkController(IMarkService service) {
+        this.service = service;
+    }
 
     @GetMapping("/:{id}")
     public List<Mark> getMark(@PathVariable("id") int id){
@@ -33,15 +37,13 @@ public class MarkController {
         return service.getMarks(pageNo,pageSize,subjectID,sort,descending);
     }
 
+
     @PostMapping
     public ResponseDTO addMark(@RequestBody MarkRequestDTO mark){
         try{
             Mark data = service.postMark(mark);
-            return new ResponseDTO("Success", 200, data);
+            return new ResponseDTO(MessageConstants.SUCCESS, 200, data);
         }catch (Exception e) {
-//            e.printStackTrace();
-            System.out.println(e.getMessage());
-            System.out.println("Error in Adding");
             return new ResponseDTO(e.getMessage(), 500, null);
         }
     }
@@ -52,8 +54,6 @@ public class MarkController {
             List<MarkResponseDTO> data = service.postMarks(marks);
             return new ResponseDTO("Success Bulk",200,data);
         }catch(Exception e){
-            System.out.println(e.getMessage());
-            System.out.println("Error In Bulk Adding");
             return new ResponseDTO(e.getMessage(),500,null);
         }
     }
@@ -63,15 +63,6 @@ public class MarkController {
         return service.updateMarkItem(mark,id);
     }
 
-//    @DeleteMapping("/all")
-//    public String deleteAll(){
-//        return service.deleteAll();
-//    }
-
-//    @DeleteMapping("/")
-//    public String deleteMark(@RequestParam int id, String subject){
-//        return service.deleteMark(id,subject);
-//    }
 
     @DeleteMapping("/:{id}")
     public String deleteById(@PathVariable("id") int id){
