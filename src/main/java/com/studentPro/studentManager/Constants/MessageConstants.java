@@ -1,4 +1,4 @@
-package Constants;
+package com.studentPro.studentManager.Constants;
 
 public class MessageConstants {
 

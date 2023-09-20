@@ -1,7 +1,7 @@
 package com.studentPro.studentManager.Service;
 
-import Constants.MessageConstants;
-import mapper.StudentMapper;
+import com.studentPro.studentManager.Constants.MessageConstants;
+import com.studentPro.studentManager.mapper.StudentMapper;
 import com.studentPro.studentManager.DTO.MarkDTO;
 import com.studentPro.studentManager.DTO.MarkRequestDTO;
 import com.studentPro.studentManager.DTO.MarkResponseDTO;

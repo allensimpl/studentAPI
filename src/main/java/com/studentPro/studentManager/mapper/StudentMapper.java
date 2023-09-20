@@ -1,4 +1,4 @@
-package mapper;
+package com.studentPro.studentManager.mapper;
 
 import com.studentPro.studentManager.DTO.MarkDTO;
 import com.studentPro.studentManager.DTO.StudentExcelDto;
@@ -34,11 +34,10 @@ public class StudentMapper {
     public static List<StudentExcelDto> studentViewToDtoConvertor(List<IStudentMarkView> studentMarkViewList){
         List<StudentExcelDto> studentExcelDtos = new ArrayList<>();
         for(IStudentMarkView view : studentMarkViewList){
-            StudentExcelDto dto = StudentExcelDto.builder()
-                    .name(view.getStudentName())
-                    .mark(view.getMarks())
-                    .subject(view.getSubject())
-                    .build();
+            StudentExcelDto dto = new StudentExcelDto();
+            dto.setName(view.getStudentName());
+            dto.setMark(view.getMark());
+            dto.setSubject(view.getSubject());
             studentExcelDtos.add(dto);
         }
         return studentExcelDtos;

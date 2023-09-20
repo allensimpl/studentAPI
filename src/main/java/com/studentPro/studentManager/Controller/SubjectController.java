@@ -1,14 +1,12 @@
 package com.studentPro.studentManager.Controller;
 
-import Constants.MessageConstants;
+import com.studentPro.studentManager.Constants.MessageConstants;
 import com.studentPro.studentManager.DTO.ResponseDTO;
-import com.studentPro.studentManager.DTO.StudentRequestDTO;
 import com.studentPro.studentManager.DTO.SubjectRequestDTO;
 import com.studentPro.studentManager.Service.ISubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Provider;
 import java.util.List;
 
 @RestController

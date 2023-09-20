@@ -1,7 +1,8 @@
 package com.studentPro.studentManager.Service;
 
+import com.studentPro.studentManager.DTO.StudentExcelDto;
 import java.util.List;
 
 public interface IResultService{
-    List<StudentMarkView> getResults();
+    public List<StudentExcelDto> getResults();
 }

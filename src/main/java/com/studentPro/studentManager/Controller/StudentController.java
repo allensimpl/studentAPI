@@ -1,6 +1,6 @@
 package com.studentPro.studentManager.Controller;
 
-import Constants.MessageConstants;
+import com.studentPro.studentManager.Constants.MessageConstants;
 import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.DTO.StudentRequestDTO;
 import com.studentPro.studentManager.DTO.StudentResponseDTO;

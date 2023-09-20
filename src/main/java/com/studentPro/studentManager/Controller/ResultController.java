@@ -1,7 +1,10 @@
 package com.studentPro.studentManager.Controller;
 
+import com.studentPro.studentManager.DTO.StudentExcelDto;
 import com.studentPro.studentManager.Service.IResultService;
+import com.studentPro.studentManager.Service.IStudentService;
 import com.studentPro.studentManager.Utils.ExcelGenerator;
+import com.studentPro.studentManager.view.IStudentMarkView;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +30,7 @@ public class ResultController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=student" + currentDateTime + ".xlsx";
         response.setHeader(headerKey,headerValue);
-        List<StudentMarkView> resultsList = service.getResults();
+        List<StudentExcelDto> resultsList = service.getResults();
         ExcelGenerator generator = new ExcelGenerator(resultsList);
         generator.generateExcelFile(response);
     }

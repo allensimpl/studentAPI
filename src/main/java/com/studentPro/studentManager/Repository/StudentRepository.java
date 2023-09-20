@@ -1,6 +1,7 @@
 package com.studentPro.studentManager.Repository;
 
 import com.studentPro.studentManager.Entity.Student;
+import com.studentPro.studentManager.view.IStudentMarkView;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,4 +47,17 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
 
     @Query(value = "SELECT COUNT(*) from students where email in :emails",nativeQuery = true)
     int containsEmailIDs(List<String> emails);
+
+    @Query(value = """
+           SELECT
+           S.name AS studentName,
+           Sub.subject AS subject,
+           M.mark AS mark
+           FROM marks M
+           JOIN students S ON M.st_id = S.id
+           JOIN subjects Sub ON M.subject_id = Sub.id
+           ORDER BY
+           M.mark DESC;
+        """, nativeQuery = true)
+    List<IStudentMarkView> getResults();
 }
