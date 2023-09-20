@@ -12,13 +12,13 @@ public interface ResultRepository extends JpaRepository<IStudentMarkView,Integer
     @Query(value = """
            SELECT
            S.name AS studentName,
-           Sub.subject AS SubjectName,
-           M.mark AS Mark
+           Sub.subject AS subject,
+           M.mark AS mark
            FROM marks M
            JOIN students S ON M.st_id = S.id
            JOIN subjects Sub ON M.subject_id = Sub.id
            ORDER BY
            M.mark DESC;
         """, nativeQuery = true)
-    public List<Result> getResults();
+    public List<IStudentMarkView> getResults();
 }

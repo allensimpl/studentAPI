@@ -1,11 +1,10 @@
 package com.studentPro.studentManager.Service;
 
 import Constants.MessageConstants;
-import Mapper.StudentMapper;
+import mapper.StudentMapper;
 import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.DTO.SubjectRequestDTO;
 import com.studentPro.studentManager.DTO.SubjectResponseDTO;
-import com.studentPro.studentManager.Entity.Student;
 import com.studentPro.studentManager.Entity.Subject;
 import com.studentPro.studentManager.Repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;

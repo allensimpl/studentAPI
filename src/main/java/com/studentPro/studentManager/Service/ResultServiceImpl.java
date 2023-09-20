@@ -10,7 +10,7 @@ public class ResultServiceImpl implements IResultService{
     @Autowired
     private ResultRepository repository;
     @Override
-    public List<Result> getResults() {
+    public List<StudentMarkView> getResults() {
         return repository.getResults();
     }
 }

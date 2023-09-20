@@ -27,7 +27,7 @@ public class ResultController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=student" + currentDateTime + ".xlsx";
         response.setHeader(headerKey,headerValue);
-        List<Result> resultsList = service.getResults();
+        List<StudentMarkView> resultsList = service.getResults();
         ExcelGenerator generator = new ExcelGenerator(resultsList);
         generator.generateExcelFile(response);
     }

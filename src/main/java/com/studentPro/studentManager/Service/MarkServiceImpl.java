@@ -1,7 +1,7 @@
 package com.studentPro.studentManager.Service;
 
 import Constants.MessageConstants;
-import Mapper.StudentMapper;
+import mapper.StudentMapper;
 import com.studentPro.studentManager.DTO.MarkDTO;
 import com.studentPro.studentManager.DTO.MarkRequestDTO;
 import com.studentPro.studentManager.DTO.MarkResponseDTO;
@@ -9,7 +9,6 @@ import com.studentPro.studentManager.DTO.ResponseDTO;
 import com.studentPro.studentManager.Entity.Mark;
 import com.studentPro.studentManager.Repository.MarkRepository;
 import com.studentPro.studentManager.Repository.StudentRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 @Service
 public class MarkServiceImpl implements IMarkService{

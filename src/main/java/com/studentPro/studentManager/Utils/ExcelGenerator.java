@@ -15,11 +15,11 @@ import java.util.List;
 import static org.apache.poi.ss.util.CellUtil.createCell;
 
 public class ExcelGenerator {
-    private List<Result> resultList;
+    private List<StudentMarkView> resultList;
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
 
-    public ExcelGenerator(List<Result> resultList){
+    public ExcelGenerator(List<StudentMarkView> resultList){
         this.resultList = resultList;
         workbook = new XSSFWorkbook();
     }
@@ -45,10 +45,10 @@ public class ExcelGenerator {
         font.setBold(true);
         font.setFontHeight(16);
         style.setFont(font);
-        createCell(row,0,"ID",style);
-        createCell(row,1,"Student Name",style);
-        createCell(row,2,"Email",style);
-        createCell(row,3,"Mobile No",style);
+//        createCell(row,0,"ID",style);
+        createCell(row,1,"Name",style);
+        createCell(row,2,"Subject",style);
+        createCell(row,3,"Mark",style);
     }
     private void write(){
         int rowCount = 1;
@@ -56,12 +56,12 @@ public class ExcelGenerator {
         XSSFFont font = workbook.createFont();
         font.setFontHeight(14);
         style.setFont(font);
-        for(Result result: resultList){
+        for(StudentMarkView result: resultList){
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
-            createCell(row,columnCount++,result.getId(),style);
+//            createCell(row,columnCount++,result.getId(),style);
             createCell(row,columnCount++,result.getStudentName(),style);
-            createCell(row,columnCount++,result.getSubjectName(),style);
+            createCell(row,columnCount++,result.getSubject(),style);
             createCell(row,columnCount,result.getMark(),style);
         }
     }
