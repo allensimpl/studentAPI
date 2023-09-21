@@ -19,17 +19,6 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
 
     @Query(value = "SELECT * FROM students WHERE name LIKE :chara%", nativeQuery = true)
     List<Student> findByStartingChar(String chara);
-
-//    @Query(value = """
-//                    SELECT CASE WHEN EXISTS
-//                    (
-//                            SELECT * FROM students WHERE id =:rollNo
-//                    )
-//                    THEN 'TRUE'
-//                    ELSE 'FALSE'
-//                    END
-//                    """, nativeQuery = true)
-//    boolean containsID(int rollNo);
     @Query(value = "SELECT COUNT(*) FROM students WHERE id = :rollNO",nativeQuery = true)
     int containsID(@Param("rollNO") int rollNo);
 

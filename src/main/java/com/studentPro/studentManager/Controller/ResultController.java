@@ -24,14 +24,6 @@ public class ResultController {
     private IResultService service;
     @GetMapping("exportExcel")
     public void getExcelFile(HttpServletResponse response)throws IOException{
-        response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=student" + currentDateTime + ".xlsx";
-        response.setHeader(headerKey,headerValue);
-        List<StudentExcelDto> resultsList = service.getResults();
-        ExcelGenerator generator = new ExcelGenerator(resultsList);
-        generator.generateExcelFile(response);
+        service.getResults(response);
     }
 }

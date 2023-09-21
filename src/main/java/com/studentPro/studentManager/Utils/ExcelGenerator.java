@@ -18,18 +18,18 @@ import java.util.List;
 import static org.apache.poi.ss.util.CellUtil.createCell;
 
 public class ExcelGenerator {
-    private List<StudentExcelDto> resultList;
-    private XSSFWorkbook workbook;
-    private XSSFSheet sheet;
+//    private static List<StudentExcelDto> resultList;
+//    private static XSSFWorkbook workbook;
+//    private static XSSFSheet sheet;
 
-    public ExcelGenerator(List<StudentExcelDto> resultList){
-        this.resultList = resultList;
-        workbook = new XSSFWorkbook();
-    }
-    private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
+//    public ExcelGenerator(List<StudentExcelDto> resultList){
+//        this.resultList = resultList;
+//        workbook = new XSSFWorkbook();
+//    }
+    private static void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style, XSSFSheet sheet) {
         sheet.autoSizeColumn(columnCount);
         Cell cell = row.createCell(columnCount);
-        System.out.println(valueOfCell);
+//        System.out.println(valueOfCell);
         if(valueOfCell == null)
             return;
         if (valueOfCell instanceof Integer) {
@@ -43,8 +43,8 @@ public class ExcelGenerator {
         }
         cell.setCellStyle(style);
     }
-    private void writeHeader(){
-        sheet = workbook.createSheet("Result");
+    private static void writeHeader(XSSFWorkbook workbook, XSSFSheet sheet){
+//        sheet = workbook.createSheet("Result");
         Row row = sheet.createRow(0);
         CellStyle style = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
@@ -52,11 +52,11 @@ public class ExcelGenerator {
         font.setFontHeight(16);
         style.setFont(font);
 //        createCell(row,0,"ID",style);
-        createCell(row,0,"Name",style);
-        createCell(row,1,"Subject",style);
-        createCell(row,2,"Mark",style);
+        createCell(row,0,"Name",style,sheet);
+        createCell(row,1,"Subject",style,sheet);
+        createCell(row,2,"Mark",style,sheet);
     }
-    private void write(){
+    private static void write(XSSFWorkbook workbook, XSSFSheet sheet,List<StudentExcelDto> resultList){
         int rowCount = 1;
         CellStyle style = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
@@ -66,17 +66,13 @@ public class ExcelGenerator {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
 //            createCell(row,columnCount++,result.getId(),style);
-            createCell(row,columnCount++,result.getName(),style);
-            createCell(row,columnCount++,result.getSubject(),style);
-            createCell(row,columnCount,result.getMark(),style);
+            createCell(row,columnCount++,result.getName(),style,sheet);
+            createCell(row,columnCount++,result.getSubject(),style,sheet);
+            createCell(row,columnCount,result.getMark(),style,sheet);
         }
     }
-    public void generateExcelFile(HttpServletResponse response)throws IOException{
-        writeHeader();
-        write();
-        ServletOutputStream outputStream = response.getOutputStream();
-        workbook.write(outputStream);
-        workbook.close();
-        outputStream.close();
+    public static void generateExcelFile(HttpServletResponse response,XSSFWorkbook workbook,XSSFSheet sheet, List<StudentExcelDto> resultList)throws IOException{
+        writeHeader(workbook, sheet);
+        write(workbook,sheet,resultList);
     }
 }
